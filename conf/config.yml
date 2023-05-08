@@ -11,3 +11,6 @@ mail:
 mongo:
     uri: mongodb://localhost:27017
     defaul: systemMonitor
+log:
+    level: debug
+    target: os

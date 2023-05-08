@@ -1,15 +1,16 @@
 package api
 
 import (
+	"time"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"github.com/wayne011872/goSterna/db"
 	"github.com/wayne011872/goSterna/log"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"github.com/wayne011872/goSterna/api"
 	apiErr "github.com/wayne011872/goSterna/api/err"
 	"github.com/wayne011872/systemMonitorServer/model/sysInfo"
 	"github.com/wayne011872/systemMonitorServer/input"
+	"github.com/wayne011872/systemMonitorServer/libs"
 )
 
 func NewSysInfoAPI(service string) api.GinAPI {
@@ -40,10 +41,14 @@ func(a *sysInfoAPI) postEndpoint(c *gin.Context) {
 		a.GinOutputErr(c, error)
 		return
 	}
-	logger := log.GetLogByReq(c.Request)
-	mgoClient := db.GetMgoDBClientByReq(c.Request)
+	isError := libs.DetectError(in.SysInfo)
+	if isError {
+		in.SysInfo.SendTime = time.Now().Format("2006-01-02 15:04:05")
+	}
+	logger := log.GetLogByGin(c)
+	mgoClient := db.GetMgoDBClientByGin(c)
 	crud := sysInfo.NewCRUD(c.Request.Context(),mgoClient.GetCoreDB(),logger)
-	err = crud.Save(primitive.NilObjectID,in.SysInfo)
+	_,err = crud.Save(in.SysInfo)
 	if err != nil {
 		a.GinOutputErr(c, err)
 		return

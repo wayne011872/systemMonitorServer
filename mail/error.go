@@ -8,19 +8,15 @@ import (
 
 	"github.com/wayne011872/goSterna/mail"
 )
-func IsSendMail(sendTime time.Time,isSend bool) bool{
+func IsSendMail(sendTime time.Time) bool{
 	sendInterval, _ := strconv.Atoi(os.Getenv(("SEND_MAIL_INTERVAL_TIME")))
 	nowTime := time.Now()
 	duration := int(nowTime.Sub(sendTime).Minutes())
-	if duration >= sendInterval {
-		isSend = false
-	}
-	return isSend
+	return duration < sendInterval 
 }
 
-func SendSystemErrorMail(mailContent string) (time.Time, bool) {
+func SendMail(mailTitle,mailContent string) (time.Time, bool) {
 	sendInterval, _ := strconv.Atoi(os.Getenv(("SEND_MAIL_INTERVAL_TIME")))
-	mailTitle := "主機異常通知"
 	myMail := &mail.Mail{}
 	myMail.MailInit()
 	myMail.SetMailTitle(mailTitle)
