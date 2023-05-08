@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/wayne011872/systemMonitorServer/dao"
 	"github.com/wayne011872/systemMonitorServer/mail"
@@ -43,11 +42,7 @@ func DetectError(in *dao.SysInfo) (bool){
 		mailContent += NetMailContent
 	}
 	if mailContent != "" {
-		sendTime , _:= time.Parse("2006-01-02 15:04:05",in.SendTime)
-		if mail.IsSendMail(sendTime) {
-			return false
-		}
-		mail.SendMail("主機異常通知", mailContent)
+		mail.SendMail("主機資源異常通知", mailContent)
 		return true
 	}
 	return false

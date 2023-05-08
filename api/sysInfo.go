@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"time"
 	"net/http"
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,7 @@ import (
 	"github.com/wayne011872/systemMonitorServer/model/sysInfo"
 	"github.com/wayne011872/systemMonitorServer/input"
 	"github.com/wayne011872/systemMonitorServer/libs"
+	"github.com/wayne011872/systemMonitorServer/mail"
 )
 
 func NewSysInfoAPI(service string) api.GinAPI {
@@ -37,10 +39,12 @@ func(a *sysInfoAPI) postEndpoint(c *gin.Context) {
 	in := &input.SysInfoInput{}
 	err := c.BindJSON(in)
 	if err != nil {
+		mail.SendMail("系統監控Server異常通知",err.Error())
 		error := apiErr.New(http.StatusBadRequest, err.Error())
 		a.GinOutputErr(c, error)
 		return
 	}
+	fmt.Printf("[%s] Get Request From |%s|\n",time.Now().Format("2006-01-02 15:04:05"),in.Ip)
 	isError := libs.DetectError(in.SysInfo)
 	if isError {
 		in.SysInfo.SendTime = time.Now().Format("2006-01-02 15:04:05")
@@ -50,6 +54,7 @@ func(a *sysInfoAPI) postEndpoint(c *gin.Context) {
 	crud := sysInfo.NewCRUD(c.Request.Context(),mgoClient.GetCoreDB(),logger)
 	_,err = crud.Save(in.SysInfo)
 	if err != nil {
+		mail.SendMail("系統監控Server異常通知",err.Error())
 		a.GinOutputErr(c, err)
 		return
 	}
