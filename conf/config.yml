@@ -7,6 +7,8 @@ mail:
   password: "eakkxyfymdmzgaul"
   to: [
     "wayne011872@gmail.com",
+    "dragondriverex@gmail.com",
+    "stevendothebest@gmail.com",
   ]
 mongo:
     uri: mongodb://localhost:27017
