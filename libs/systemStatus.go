@@ -11,7 +11,7 @@ import (
 
 func DetectError(in *dao.SysInfo) (bool){
 	ipAddress := in.Ip
-	errorRate, _ := strconv.Atoi(os.Getenv(("ERROR_RATE")))
+	errorRate := in.ErrorRate
 	netErrorKbps, _ := strconv.Atoi(os.Getenv(("NETWORK_ERROR_KPBS")))
 	mailContent := ""
 	if int(in.CpuUsage) >= errorRate {

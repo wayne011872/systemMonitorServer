@@ -19,4 +19,5 @@ type SysInfo struct {
 	NetworkOut  float64
 	DataTime    string
 	SendTime    string
+	ErrorRate   int
 }
