@@ -2,7 +2,6 @@ package libs
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/wayne011872/systemMonitorServer/dao"
@@ -12,7 +11,7 @@ import (
 func DetectError(in *dao.SysInfo) (bool){
 	ipAddress := in.Ip
 	errorRate := in.ErrorRate
-	netErrorKbps, _ := strconv.Atoi(os.Getenv(("NETWORK_ERROR_KPBS")))
+	netErrorKbps := in.NetErrorKbps
 	mailContent := ""
 	if int(in.CpuUsage) >= errorRate {
 		var cpuMessage string
@@ -31,8 +30,8 @@ func DetectError(in *dao.SysInfo) (bool){
 		memoryMailContent := fmt.Sprintf("<h3><strong>警告!!! %s 主機記憶體使用率大於%d%%</strong></h3></br><p>以下是記憶體使用率前10高的程序:</p></br><p>%s</p>", ipAddress, errorRate, memoryMessage)
 		mailContent += memoryMailContent
 	}
-	for k, d := range in.DiskUsage {
-		if int(d) >= errorRate {
+	for k, d := range in.DiskStatus {
+		if int(d.DiskUsedPercent) >= errorRate {
 			diskMailContent := fmt.Sprintf("<h3><strong>警告!!! %s硬碟%d使用率大於%d%%</strong></h3></br>", ipAddress, k, errorRate)
 			mailContent += diskMailContent
 		}
