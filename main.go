@@ -7,8 +7,10 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+
 	"github.com/wayne011872/goSterna/api/mid"
 	"github.com/wayne011872/goSterna/db"
+	"github.com/wayne011872/goSterna/storage"
 	sternaLog "github.com/wayne011872/goSterna/log"
 	"github.com/wayne011872/goSterna/api"
 	myapi "github.com/wayne011872/systemMonitorServer/api"
@@ -38,10 +40,11 @@ func runAPI() {
 	port := os.Getenv("API_PORT")
 	ginMode := os.Getenv(("GIN_MODE"))
 	serviceName := os.Getenv(("SERVICE"))
+	confPath := os.Getenv("CONF_PATH")
 	di := &di{}
 	log.Println("run api port: ", port)
 	log.Fatal(api.NewGinApiServer(ginMode).Middles(
-		mid.NewServiceDiMid(di,serviceName),
+		mid.NewGinDevDiMid(storage.NewHdStorage(confPath), di, serviceName),
 		mid.NewGinDBMid(serviceName),
 	).AddAPIs(
 		myapi.NewSysInfoAPI(serviceName),

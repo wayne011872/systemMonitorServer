@@ -40,7 +40,7 @@ func(a *sysInfoAPI) postEndpoint(c *gin.Context) {
 	err := c.BindJSON(in)
 	if err != nil {
 		mail.SendMail("系統監控Server異常通知",err.Error())
-		error := apiErr.New(http.StatusBadRequest, err.Error())
+		error := apiErr.NewApiError(http.StatusBadRequest, err.Error())
 		a.GinOutputErr(c, error)
 		return
 	}

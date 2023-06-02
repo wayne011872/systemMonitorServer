@@ -1,17 +1,18 @@
 # Start by building the application.
-FROM golang:alpine as build
+FROM golang:1.20 as build
 
-WORKDIR /app
-COPY . /app
+WORKDIR /go/src/app
+COPY . .
 
-RUN cd /app && go build -o goapp
+RUN go mod download
+RUN CGO_ENABLED=0 go build -o /go/bin/app
 
 # Now copy it into our base image.
 FROM gcr.io/distroless/static-debian11
+COPY --from=build /go/bin/app /
+ENV CONF_PATH=./conf/
+ENV API_PORT=9080
+ENV GIN_MODE=release
+ENV SERVICE=sysInfo
 
-WORKDIR /app
-COPY --from=build /app/goapp /app
-COPY --from=build /app/.env /app
-COPY --from=build /app/conf /app/conf
-
-CMD [ "./goapp" , "-o" , "print"]
+CMD ["/app", "-em", "container"]
