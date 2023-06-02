@@ -10,9 +10,9 @@ import (
 
 func DetectError(in *dao.SysInfo) (bool){
 	ipAddress := in.Ip
-	cpuUsedPercent,_ := strconv.Atoi(in.CpuUsage)
-	memUsedPercent,_ := strconv.Atoi(in.MemoryStatus.MemUsedPercent)
-	errorRate := in.ErrorRate
+	cpuUsedPercent,_ := strconv.ParseFloat(in.CpuUsage,64)
+	memUsedPercent,_ := strconv.ParseFloat(in.MemoryStatus.MemUsedPercent,64)
+	errorRate := float64(in.ErrorRate)
 	netErrorKbps := in.NetErrorKbps
 	mailHead := fmt.Sprintf("<p><strong>主機IP: %s</strong></p>",ipAddress)
 	mailSeparate := "<p>-------------------------------------------<p></br>"
@@ -20,7 +20,7 @@ func DetectError(in *dao.SysInfo) (bool){
 	mailContent := ""
 	if cpuUsedPercent >= errorRate {
 		infoMessage := fmt.Sprintf("<p>目前CPU使用率: %s%%</p></br>",in.CpuUsage)
-		cpuMailContent := fmt.Sprintf("<h3><strong>警告!!!主機CPU使用率大於%d%%</strong></h3></br><p>以下為目前CPU資訊: </p>%s</br>%s",errorRate,infoMessage,mailSeparate)
+		cpuMailContent := fmt.Sprintf("<h3><strong>警告!!!主機CPU使用率大於%0.f%%</strong></h3></br><p>以下為目前CPU資訊: </p>%s</br>%s",errorRate,infoMessage,mailSeparate)
 		mailContent += cpuMailContent
 	}
 	if memUsedPercent >= errorRate {
@@ -29,14 +29,14 @@ func DetectError(in *dao.SysInfo) (bool){
 			memoryMessage += fmt.Sprintf("<p>Pid:%-10s 程序名稱: %-30s 記憶體使用率:%s%%</p></br>", strconv.FormatInt(int64(p.Pid), 10), p.Name, p.MemRate)
 		}
 		infoMessage := fmt.Sprintf("<p>目前記憶體使用率: %s%%</p></br>",in.MemoryStatus.MemUsedPercent)
-		memoryMailContent := fmt.Sprintf("<h3><strong>警告!!!主機記憶體使用率大於%d%%</strong></h3></br><p>以下為目前記憶體資訊: </p>%s</br><p>以下是記憶體使用率前10高的程序:</p></br><p>%s</p></br>%s",errorRate,infoMessage, memoryMessage,mailSeparate)
+		memoryMailContent := fmt.Sprintf("<h3><strong>警告!!!主機記憶體使用率大於%0.f%%</strong></h3></br><p>以下為目前記憶體資訊: </p>%s</br><p>以下是記憶體使用率前10高的程序:</p></br><p>%s</p></br>%s",errorRate,infoMessage, memoryMessage,mailSeparate)
 		mailContent += memoryMailContent
 	}
 	for _, d := range in.DiskStatus {
-		diskUsedPercent,_ := strconv.Atoi(d.UsedRate)
+		diskUsedPercent,_ := strconv.ParseFloat(d.UsedRate,64)
 		if diskUsedPercent >= errorRate {
 			infoMessage := fmt.Sprintf("<p>目前硬碟使用率: %s%%</p></br><p>總空間: %s</p></br><p>剩餘空間: %s</p></br>",d.UsedRate,d.TotalSize,d.AvailableSize)
-			diskMailContent := fmt.Sprintf("<h3><strong>警告!!!主機硬碟%s使用率大於%d%%</strong></h3></br><p>以下為目前硬碟資訊: </p>%s</br>%s",d.Drive, errorRate,infoMessage,mailSeparate)
+			diskMailContent := fmt.Sprintf("<h3><strong>警告!!!主機硬碟%s使用率大於%0.f%%</strong></h3></br><p>以下為目前硬碟資訊: </p>%s</br>%s",d.Drive, errorRate,infoMessage,mailSeparate)
 			mailContent += diskMailContent
 		}
 	}
