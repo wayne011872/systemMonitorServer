@@ -1,7 +1,7 @@
 mail:
   username: "numax84257736@gmail.com"
   server: "smtp.gmail.com"
-  port: "465"
+  port: 465
   ssl: true
   from: "numax84257736@gmail.com"
   password: "eakkxyfymdmzgaul"
@@ -10,6 +10,9 @@ mail:
     "dragondriverex@gmail.com",
     "stevendothebest@gmail.com",
   ]
+line:
+    notifyUrl: "https://notify.numax.com.tw/v1/notify"
+    token: "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6Im5vdGlmeSIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTIzMjkyODcsImlhdCI6MTY5MjMyNTY4NywiaXNzIjoidGVzdF9ub3RpZnkubnVtYXguY29tLnR3IiwibmFtIjoiTnVtYXjns7vntbHpgJrnn6UiLCJyb2xlIjpbInB1Ymxpc2hlciJdLCJzZXIiOiI2NGRlYzRmNDc4M2QwNTg0ZGM4MDcwYjciLCJzdWIiOiI2NGRlZDczNzc4M2QwNTg0ZGM4MDcwZTEifQ.L-FsM_vWkusZmH6MK7ihkI39gb-mvSgj4_Qmru8cUK6xHsci144-rRwDsIth3hCSIa55IKI0sYxPob256mBMQuvUSkpylJnkSiXKhIWmQp6fCT492bOqlA8dI0yptTwsr23qfUTpi3zZ4UAOpYXetlDIbm_H_xbumM8U_BvrlZs6hoaN2AJz1czV1rBfGcbybJNMa087YbGywXb2ZDmrW6qPZW9tVA0f4lBKGVtgnYG7zDklt0iOQRgTtC5tsilHyYuuV3v8ukp1aLCRh5BiUPvE02TF4giOICMtSosWg59n-BRcQD7SpRju4xyZqDQ7pjtTFdnkBvw07CRxW0Xex0DUIrSIzMOvCIgfX8kG4bfpAAIoEDel4sbk8GS0-xC5F-MnZL-RzFSlaSgQ-7DWyUk0O7JUEhxghi7Cjp8khIZ3I46mp2NEDyqXPDnILnEUxJywbqiYJ8wwrXIM8fqSI8Ue-W--HEFsLV9jMc46kQc_FrHSrRx8pfMSGE8NIoZspeQvjtCfeVUWOvTQVpKyflarob22Y1QU0zYHTBQ8nV4EQFF-Fy4isQ3A6rtR_1OveNn2u81C0_-EU4QLB85OlGx6SoQUR04AJOiEtNl2ziQjvhKlUbctKK6zd3cJCekX9p4SufTkr3vntISclrs2Fkrnuc1F4sNBq50re3PKSIs"
 mongo:
     uri: mongodb://localhost:27017
     defaul: systemMonitor

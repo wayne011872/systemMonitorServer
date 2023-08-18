@@ -10,6 +10,7 @@ import (
 
 	"github.com/wayne011872/goSterna/api/mid"
 	"github.com/wayne011872/goSterna/db"
+	"github.com/wayne011872/goSterna/notify"
 	"github.com/wayne011872/goSterna/storage"
 	sternaLog "github.com/wayne011872/goSterna/log"
 	"github.com/wayne011872/goSterna/api"
@@ -46,6 +47,8 @@ func runAPI() {
 	log.Fatal(api.NewGinApiServer(ginMode).Middles(
 		mid.NewGinDevDiMid(storage.NewHdStorage(confPath), di, serviceName),
 		mid.NewGinDBMid(serviceName),
+		mid.NewGinMailMid(serviceName),
+		mid.NewGinLineMid(serviceName),
 	).AddAPIs(
 		myapi.NewSysInfoAPI(serviceName),
 	).Run(port).Error())
@@ -53,11 +56,19 @@ func runAPI() {
 
 
 type di struct {
-	*db.MongoConf         `yaml:"mongo,omitempty"`
-	*sternaLog.LoggerConf `yaml:"log,omitempty"`
+	*notify.LineConf		`yaml:"line,omitempty"`
+	*notify.MailConf		`yaml:"mail,omitempty"`
+	*db.MongoConf         	`yaml:"mongo,omitempty"`
+	*sternaLog.LoggerConf 	`yaml:"log,omitempty"`
 }
 
 func (d *di) IsEmpty() bool {
+	if d.LineConf == nil {
+		return true
+	}
+	if d.MailConf == nil {
+		return true
+	}
 	if d.MongoConf == nil {
 		return true
 	}
