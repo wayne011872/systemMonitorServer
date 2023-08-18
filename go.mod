@@ -2,12 +2,10 @@ module github.com/wayne011872/systemMonitorServer
 
 go 1.20
 
-replace github.com/wayne011872/goSterna v0.0.7 => ../goSterna
-
 require (
 	github.com/gin-gonic/gin v1.9.0
 	github.com/joho/godotenv v1.5.1
-	github.com/wayne011872/goSterna v0.0.7
+	github.com/wayne011872/goSterna v0.0.9
 	go.mongodb.org/mongo-driver v1.11.6
 )
 
