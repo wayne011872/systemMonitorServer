@@ -1,14 +1,12 @@
 mail:
-  username: "numax84257736@gmail.com"
+  username: "numax8425@gmail.com"
   server: "smtp.gmail.com"
   port: 465
   ssl: true
-  from: "numax84257736@gmail.com"
-  password: "eakkxyfymdmzgaul"
+  from: "numax8425@gmail.com"
+  password: "faeffdrakoagksks"
   to: [
     "wayne011872@gmail.com",
-    "dragondriverex@gmail.com",
-    "stevendothebest@gmail.com",
   ]
 line:
     notifyUrl: "https://notify.numax.com.tw/v1/notify"
@@ -16,6 +14,3 @@ line:
 mongo:
     uri: mongodb://localhost:27017
     defaul: systemMonitor
-log:
-    level: debug
-    target: os
